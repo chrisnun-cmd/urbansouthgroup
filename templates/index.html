@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="{{ c.lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ co.name }} — {% if lang == 'en' %}Real Estate{% else %}Bienes Raíces{% endif %}</title>
+    <meta name="description" content="{% if lang == 'en' %}Urban South Group Real Estate helps clients buy, sell, and invest in properties across the US. Expert guidance for homes, apartments, offices, and investments.{% else %}Urban South Group ayuda a clientes a comprar, vender e invertir en propiedades en EE.UU. Orientación experta en hogares, apartamentos, oficinas e inversiones.{% endif %}">
+    <meta property="og:title" content="{{ co.name }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ url_for('static', filename='images/hero.png', _external=True) }}">
+    <meta property="og:locale" content="{{ 'en_US' if lang == 'en' else 'es_ES' }}">
+    <meta property="og:locale:alternate" content="{{ 'es_ES' if lang == 'en' else 'en_US' }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="alternate" hreflang="en" href="{{ url_for('home_en', _external=True) }}">
+    <link rel="alternate" hreflang="es" href="{{ url_for('home_es', _external=True) }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar" id="navbar">
+    <div class="nav-inner">
+        <a href="{{ '/' if lang == 'en' else '/es/' }}" class="nav-logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="{{ co.name }}">
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#hero">{{ c.nav.home }}</a></li>
+            <li><a href="#properties">{{ c.nav.properties }}</a></li>
+            <li><a href="#sell">{{ c.nav.sell }}</a></li>
+            <li><a href="#agents">{{ c.nav.agents }}</a></li>
+            <li><a href="#contact">{{ c.nav.contact }}</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="tel:{{ co.phone }}" class="nav-phone">{{ co.phone_display }}</a>
+            <a href="{{ c.alt_url }}" class="lang-switch">{{ c.alt_label }}</a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+    <div class="hero-content">
+        <p class="hero-eyebrow">{{ c.hero.eyebrow }}</p>
+        <p class="hero-subtitle">{{ c.hero.subtitle }}</p>
+        <h1 class="hero-title">{{ c.hero.title }}</h1>
+        <p class="hero-tagline">{{ c.hero.tagline }}</p>
+        <p class="hero-text">{{ c.hero.text }}</p>
+        <a href="#contact" class="btn btn-primary">{{ c.nav.contact }}</a>
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='images/hero.png') }}" alt="Urban South Group Real Estate">
+    </div>
+</section>
+
+<!-- ═══ CATEGORIES ═══ -->
+<section class="section categories" id="categories">
+    <div class="container">
+        <h2 class="section-title">{{ c.categories_title }}</h2>
+        <div class="cat-grid">
+            {% for cat in c.categories %}
+            <div class="cat-card">
+                <div class="cat-icon">
+                    {% if cat.icon == 'building' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><rect x="9" y="18" width="6" height="4"/></svg>
+                    {% elif cat.icon == 'home' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 001 1h3v-5h6v5h3a1 1 0 001-1V10"/></svg>
+                    {% elif cat.icon == 'briefcase' %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="12.01"/></svg>
+                    {% endif %}
+                </div>
+                <h3>{{ cat.title }}</h3>
+                <p>{{ cat.text }}</p>
+                <a href="#listings" class="btn btn-outline">{{ cat.cta }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FEATURED PROPERTY ═══ -->
+<section class="section featured" id="featured">
+    <div class="container">
+        <span class="badge">{{ c.featured.badge }}</span>
+        <h2 class="section-title">{{ c.featured.title }}</h2>
+        <p class="featured-location">{{ c.featured.location }}</p>
+        <div class="featured-grid">
+            {% for s in c.featured.sections %}
+            <div class="featured-card">
+                <h3>{{ s.title }}</h3>
+                <p>{{ s.text }}</p>
+                <a href="#contact" class="btn btn-outline">{{ c.nav.contact }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section class="section gallery" id="gallery">
+    <div class="container">
+        <h2 class="section-title">{{ c.gallery_title }}</h2>
+        <p class="section-subtitle">{{ c.gallery_subtitle }}</p>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="{{ url_for('static', filename='images/gallery/g1.jpg') }}" alt="Office" loading="lazy"></div>
+            <div class="gallery-item"><img src="{{ url_for('static', filename='images/gallery/g2.jpg') }}" alt="Office" loading="lazy"></div>
+            <div class="gallery-item"><img src="{{ url_for('static', filename='images/gallery/g3.jpg') }}" alt="Office" loading="lazy"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ CONTACT FORM ═══ -->
+<section class="section contact-form-section" id="contact">
+    <div class="container container-sm">
+        <h2 class="section-title">{{ c.form_title }}</h2>
+        <form id="contactForm" class="contact-form">
+            <div class="form-group">
+                <label for="cf-name">{{ c.form_name }} *</label>
+                <input type="text" id="cf-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="cf-email">{{ c.form_email }} *</label>
+                <input type="email" id="cf-email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="cf-msg">{{ c.form_message }} *</label>
+                <textarea id="cf-msg" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ c.form_submit }}</button>
+            <p class="form-status" id="formStatus"></p>
+        </form>
+    </div>
+</section>
+
+<!-- ═══ LISTINGS ═══ -->
+<section class="section listings" id="listings">
+    <div class="container">
+        <p class="section-eyebrow">{{ c.listings_eyebrow }}</p>
+        <h2 class="section-title">{{ c.listings_title }}</h2>
+        <p class="section-subtitle">{{ c.listings_subtitle }}</p>
+        <div class="listings-grid">
+            {% for p in c.listings %}
+            <div class="listing-card">
+                <div class="listing-img">
+                    <img src="{{ url_for('static', filename='images/properties/' + p.img) }}" alt="{{ p.title }}" loading="lazy">
+                    <span class="listing-status">{{ p.status }}</span>
+                    <span class="listing-type">{{ p.type }}</span>
+                </div>
+                <div class="listing-body">
+                    <h3>{{ p.title }}</h3>
+                    <p class="listing-price">{{ p.price }}</p>
+                    <p class="listing-address">{{ p.address }}</p>
+                    <p class="listing-specs">{{ p.specs }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ═══ SELL YOUR HOME ═══ -->
+<section class="section sell-section" id="sell">
+    <div class="container container-sm">
+        <h2 class="section-title">{{ c.sell_title }}</h2>
+        <p>{{ c.sell_text }}</p>
+        <form id="sellForm" class="contact-form">
+            <div class="form-group">
+                <label for="sf-name">{{ c.form_name }} *</label>
+                <input type="text" id="sf-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="sf-email">{{ c.form_email }} *</label>
+                <input type="email" id="sf-email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="sf-msg">{{ c.form_message }} *</label>
+                <textarea id="sf-msg" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ c.form_submit }}</button>
+            <p class="form-status" id="sellFormStatus"></p>
+        </form>
+    </div>
+</section>
+
+<!-- ═══ TEAM ═══ -->
+<section class="section team-section" id="agents">
+    <div class="container">
+        <h2 class="section-title">{{ c.team_intro }}</h2>
+        <p class="team-intro-text">{{ c.team_text }}</p>
+
+        <!-- Founder -->
+        {% for m in team if m.founder %}
+        <div class="founder-card">
+            <img src="{{ url_for('static', filename='images/team/' + m.img) }}" alt="{{ m.name }}">
+            <div>
+                <h3>{{ m.name }}</h3>
+                <p class="role">{{ m['role_' + lang] }}</p>
+                <a href="mailto:{{ m.email }}">{{ m.email }}</a>
+            </div>
+        </div>
+        {% endfor %}
+
+        <h3 class="realtors-title">{{ c.realtors_title }}</h3>
+        <div class="team-grid">
+            {% for m in team if not m.founder %}
+            <div class="team-card">
+                <img src="{{ url_for('static', filename='images/team/' + m.img) }}" alt="{{ m.name }}">
+                <h4>{{ m.name }}</h4>
+                <p class="role">{{ m['role_' + lang] }}</p>
+                <a href="mailto:{{ m.email }}">{{ m.email }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section class="section stats-section">
+    <div class="container">
+        <h2 class="section-title">{{ c.why_title }}</h2>
+        <p class="section-subtitle">{{ c.why_subtitle }}</p>
+        <div class="stats-grid">
+            {% for s in c.stats %}
+            <div class="stat-item" data-target="{{ s.value }}">
+                <span class="stat-number">0</span><span class="stat-suffix">{{ s.suffix }}</span>
+                <p>{{ s.label }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="section cta-section">
+    <div class="container container-sm">
+        <h2>{{ c.cta_title }}</h2>
+        <p>{{ c.cta_text }}</p>
+        <a href="tel:{{ co.phone }}" class="nav-phone-cta">{{ co.phone_display }}</a>
+        <a href="#contact" class="btn btn-primary">{{ c.cta_button }}</a>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-col">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="{{ co.name }}" class="footer-logo">
+            <p>{{ c.footer_tagline }}</p>
+        </div>
+        <div class="footer-col">
+            <h4>{{ c.footer_address_title }}</h4>
+            <p>{{ co.address }}</p>
+            <p><a href="tel:{{ co.phone }}">{{ co.phone_display }}</a></p>
+            <p><a href="mailto:{{ co.email }}">{{ co.email }}</a></p>
+        </div>
+        <div class="footer-col">
+            <h4>{{ c.footer_hours_title }}</h4>
+            <p><strong>{{ c.footer_hours_weekday }}</strong><br>{{ c.footer_hours_weekday_val }}</p>
+            <p><strong>{{ c.footer_hours_weekend }}</strong><br>{{ c.footer_hours_weekend_val }}</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>Copyright &copy; 2026 {{ co.name }}</p>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
