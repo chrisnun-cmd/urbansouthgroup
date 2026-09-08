@@ -1,83 +1,42 @@
-// ═══ Mobile menu ═══
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-    hamburger.classList.toggle('active');
-});
-navLinks.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        hamburger.classList.remove('active');
-    });
+// Curtain loader
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const curtain = document.getElementById('curtain');
+    if (curtain) curtain.classList.add('lift');
+  }, 1400);
 });
 
-// ═══ Navbar scroll effect ═══
-window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-});
-
-// ═══ Counter animation ═══
-const counters = document.querySelectorAll('.stat-item');
-const observed = new Set();
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !observed.has(entry.target)) {
-            observed.add(entry.target);
-            const el = entry.target;
-            const target = parseInt(el.dataset.target);
-            const numEl = el.querySelector('.stat-number');
-            let current = 0;
-            const step = Math.max(1, Math.floor(target / 40));
-            const interval = setInterval(() => {
-                current += step;
-                if (current >= target) { current = target; clearInterval(interval); }
-                numEl.textContent = current;
-            }, 30);
-        }
-    });
-}, { threshold: 0.5 });
-counters.forEach(c => observer.observe(c));
-
-// ═══ Forms ═══
-function handleForm(formId, statusId) {
-    const form = document.getElementById(formId);
-    if (!form) return;
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const status = document.getElementById(statusId);
-        const data = Object.fromEntries(new FormData(form));
-        try {
-            const res = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            const json = await res.json();
-            if (json.ok) {
-                status.textContent = '✓ Message sent!';
-                status.className = 'form-status ok';
-                form.reset();
-            } else {
-                status.textContent = json.error || 'Error';
-                status.className = 'form-status err';
-            }
-        } catch {
-            status.textContent = 'Connection error';
-            status.className = 'form-status err';
-        }
-    });
+// Nav scrolled state
+const nav = document.getElementById('nav');
+if (nav) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
 }
-handleForm('contactForm', 'formStatus');
-handleForm('sellForm', 'sellFormStatus');
 
-// ═══ Smooth scroll for anchor links ═══
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
+// Sell form
+const sellForm = document.getElementById('sellForm');
+if (sellForm) {
+  sellForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      name: sellForm.querySelector('[name=name]').value,
+      email: sellForm.querySelector('[name=email]').value,
+      message: sellForm.querySelector('[name=message]').value,
+    };
+    try {
+      const r = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+      });
+      const j = await r.json();
+      if (j.ok) {
+        sellForm.innerHTML = '<p style="font-family:var(--f-display); font-style:italic; font-size:1.4rem; color:var(--gold); text-align:center; padding:2rem;">Message received. We will be in touch shortly.</p>';
+      } else {
+        alert(j.error || 'Error');
+      }
+    } catch (err) { alert('Network error'); }
+  });
+}
