@@ -11,12 +11,14 @@
 
 <!-- CURTAIN loader -->
 <div class="curtain" id="curtain">
-  <div class="mark">URBAN · SOUTH · GROUP</div>
+  <img src="{{ url_for('static', filename='images/logo-large.png') }}" alt="Urban South Group" class="curtain__logo">
 </div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <a href="{% if lang == 'en' %}/{% else %}/es/{% endif %}" class="nav__brand">Urban <em>South</em> Group</a>
+  <a href="{% if lang == 'en' %}/{% else %}/es/{% endif %}" class="nav__brand" aria-label="Urban South Group">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Urban South Group Real Estate" class="nav__logo">
+  </a>
   <div class="nav__center">
     <a href="#featured">{{ c.nav.properties }}</a>
     <a href="#sell">{{ c.nav.sell }}</a>
@@ -265,7 +267,7 @@
 <footer class="footer">
   <div class="footer__grid">
     <div>
-      <div class="footer__brand">URBAN <em>SOUTH</em> GROUP</div>
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Urban South Group" class="footer__logo">
       <p class="footer__tagline">{{ c.footer_tagline }}</p>
     </div>
     <div class="footer__col">
