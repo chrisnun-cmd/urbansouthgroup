@@ -59,6 +59,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   opacity: 0;
   animation: markFade 1.2s ease forwards 0.2s;
 }
+.curtain__logo {
+  width: clamp(240px, 32vw, 400px);
+  height: auto;
+  opacity: 0;
+  animation: markFade 1.2s ease forwards 0.15s;
+  filter: drop-shadow(0 0 40px rgba(184, 147, 91, 0.35));
+}
 @keyframes markFade {
   0%   { opacity: 0; letter-spacing: 0.5em; }
   60%  { opacity: 1; letter-spacing: 0.2em; }
@@ -70,7 +77,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 50;
-  padding: 1.6rem var(--pad-x);
+  padding: 1rem var(--pad-x);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -78,7 +85,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   mix-blend-mode: difference;
   transition: padding 0.4s ease;
 }
-.nav.scrolled { padding-top: 1rem; padding-bottom: 1rem; }
+.nav.scrolled { padding-top: 0.6rem; padding-bottom: 0.6rem; }
 
 .nav__brand {
   font-family: var(--f-display);
@@ -86,8 +93,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 1.05rem;
   letter-spacing: 0.28em;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  /* Sacar el mix-blend del logo para que se vea con sus colores originales */
+  mix-blend-mode: normal;
+  isolation: isolate;
 }
 .nav__brand em { font-style: italic; font-weight: 300; }
+.nav__logo {
+  height: 80px;
+  width: auto;
+  display: block;
+  transition: height 0.4s ease;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+.nav.scrolled .nav__logo { height: 58px; }
 
 .nav__center {
   display: flex;
@@ -909,6 +929,12 @@ section { padding: clamp(5rem, 12vh, 9rem) var(--pad-x); }
   font-size: 1.4rem;
   letter-spacing: 0.2em;
   margin-bottom: 1.5rem;
+}
+.footer__logo {
+  height: 90px;
+  width: auto;
+  margin-bottom: 1.5rem;
+  display: block;
 }
 .footer__tagline {
   font-family: var(--f-display);
